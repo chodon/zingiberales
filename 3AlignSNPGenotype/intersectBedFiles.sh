@@ -1,0 +1,3 @@
+intersectBed -a bdjq_covered.bed -b cost_covered.bed | intersectBed -a stdin -b curc_covered.bed | intersectBed -a stdin -b jnub_covered.bed | intersectBed -a stdin -b knkv_covered.bed | intersectBed -a stdin -b lskk_covered.bed | intersectBed -a stdin -b tzns_covered.bed | intersectBed -a stdin -b uoel_covered.bed > all_covered.bed
+awk '($3-$2)>149' all_covered.bed  > all_covered_150bp.bed
+awk '{print $1}' all_covered_150bp.bed | sort | uniq > all_covered_150bp_exons_list   

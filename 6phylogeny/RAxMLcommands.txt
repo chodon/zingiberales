@@ -1,0 +1,1 @@
+raxmlHPC-HYBRID -T 4 -n result -s infile.txt -q part.txt -p 12345 -x 12345 -N 1000 -c 25 -f a -m GTRCAT 
