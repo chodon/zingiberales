@@ -1,0 +1,137 @@
+#NEXUS
+begin taxa;
+	dimensions ntax=58;
+	taxlabels
+	CS22_Elettariopsis_stenosiphon_Zingiberaceae4
+	CS21_Renealmia_alpinia_Zingiberaceae4
+	CS40_Aframomum_angustifolium_Zingiberaceae4
+	CS29_Alpinia_zerumbet_Zingiberaceae4
+	CS46_Alpinia_purpurata_Zingiberaceae4
+	CS36_Etlingera_elatior_Zingiberaceae4
+	CS58_Siamanthus_siliquosus_Zingiberaceae4
+	CS16_Riedelia_sp_Zingiberaceae4
+	CS09_Globba_winitti_Zingiberaceae3
+	CS07_Curcuma_longa_Zingiberaceae3
+	CS47_Curcuma_roscoeana_Zingiberaceae3
+	CS02_Hedychium_coronarium_Zingiberaceae3
+	CS33_Scaphochlamys_sp_Zingiberaceae
+	CS31_Zingiber_spectabile_Zingiberaceae3
+	CS20_Zingiber_officinale_Zingiberaceae3
+	CS32_Siphonochilus_kirkii_Zingiberaceae1
+	CS28_Canna_iridiflora_Cannaceae
+	CS37_Canna_indica_Cannaceae
+	CS48_Canna_jaegeriana_Cannaceae
+	CS24_Marantachloa_leucantha_Marantaceae4
+	CS39_Halopegia_asurea_Marantaceae4
+	CS18_Stromanthe_stromanthoides_Marantaceae4
+	CS38_Thamatoccous_daniellii_Marantaceae1
+	CS50_Donax_grandis_Marantaceae3
+	CS53_Ishnosiphon_helenae_Marantaceae2
+	CS06_Calathea_roseo_picta_Marantaceae2
+	CS34_Heliconia_acuminata_Heliconiaceae
+	CS69_Heliconia_nutans_Heliconiaceae
+	CS25_Heliconia_schneeana_Heliconiaceae
+	CS23_Heliconia_collinsiana_Heliconiaceae
+	CS41_Heliconia_indica_Heliconiaceae
+	CS57_Orchidantha_maxillarioides_Lowiaceae
+	CS30_Orchidantha_fimbriata_Lowiaceae
+	CS35_Ravenala_madagascariensis_Strelitziaceae
+	CS43_strelitzia_caudata_Strelitziaceae
+	CS71_Strelitzia_reginae_Strelitziaceae
+	HAMA_Hanguana_malayana_Hanguanaceae
+	HWUP_Sabal_bermudana_Arecaceae
+	PPQR_Typha_angustifolia_Typhaceae
+	CS13_Musella_lasiocarpa_Musaceae1
+	CS14_Ensete_ventricosum_Musaceae1ventricosum
+	CS51_Ensete_superbum_Musaceae1glaucum
+	CS54_Musa_coccinea_Musaceae2bcallimusa
+	CS12_Musa_textilis_Musaceae2aaustralimusa
+	MUBA_Musa_balbisiana_Musaceae
+	CS70_musa_basjoo_Musaceae2amusa
+	CS55_Musa_ornata_Musaceaerhodochlamys
+	MUAC_Musa_acuminata_Musaceae
+	CS15_Cheilocostus_Costaceae3
+	CS27_Tapeinochilos_ananassae_Costaceae3
+	CS72_Chamaecostus_subsessilis_Costaceae
+	CS17_Dimerocostus_strobilaceus_Costaceae1
+	CS19_Monocostus_uniflorus_Costaceae
+	CS49_Costus_gabonensis_Costaceae2
+	CS42_Costus_dubius_Costaceae2
+	CS44_Costus_pictus_Costaceae2
+	CS45_Costus_pulveralentus_Costaceae2
+	CS52_Costus_osae_Costaceae2
+;
+end;
+
+begin trees;
+	tree tree_1 = [&R] (CS22_Elettariopsis_stenosiphon_Zingiberaceae4:1.0,((CS21_Renealmia_alpinia_Zingiberaceae4:1.0,CS40_Aframomum_angustifolium_Zingiberaceae4:1.0)[&boot=100.0]:1.0,((CS29_Alpinia_zerumbet_Zingiberaceae4:1.0,(CS46_Alpinia_purpurata_Zingiberaceae4:1.0,CS36_Etlingera_elatior_Zingiberaceae4:1.0)[&boot=100.0]:1.0)[&boot=97.0]:1.0,((CS58_Siamanthus_siliquosus_Zingiberaceae4:1.0,CS16_Riedelia_sp_Zingiberaceae4:1.0)[&boot=100.0]:1.0,((CS09_Globba_winitti_Zingiberaceae3:1.0,((CS07_Curcuma_longa_Zingiberaceae3:1.0,CS47_Curcuma_roscoeana_Zingiberaceae3:1.0)[&boot=100.0]:1.0,(CS02_Hedychium_coronarium_Zingiberaceae3:1.0,(CS33_Scaphochlamys_sp_Zingiberaceae:1.0,(CS31_Zingiber_spectabile_Zingiberaceae3:1.0,CS20_Zingiber_officinale_Zingiberaceae3:1.0)[&boot=100.0]:1.0)[&boot=21.099999999999998]:1.0)[&boot=99.9]:1.0)[&boot=89.4]:1.0)[&boot=100.0]:1.0,(CS32_Siphonochilus_kirkii_Zingiberaceae1:1.0,((((CS28_Canna_iridiflora_Cannaceae:1.0,(CS37_Canna_indica_Cannaceae:1.0,CS48_Canna_jaegeriana_Cannaceae:1.0)[&boot=72.6]:1.0)[&boot=100.0]:1.0,((CS24_Marantachloa_leucantha_Marantaceae4:1.0,(CS39_Halopegia_asurea_Marantaceae4:1.0,CS18_Stromanthe_stromanthoides_Marantaceae4:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0,(CS38_Thamatoccous_daniellii_Marantaceae1:1.0,(CS50_Donax_grandis_Marantaceae3:1.0,(CS53_Ishnosiphon_helenae_Marantaceae2:1.0,CS06_Calathea_roseo_picta_Marantaceae2:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=69.5]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0,(((CS34_Heliconia_acuminata_Heliconiaceae:1.0,((CS69_Heliconia_nutans_Heliconiaceae:1.0,CS25_Heliconia_schneeana_Heliconiaceae:1.0)[&boot=68.0]:1.0,(CS23_Heliconia_collinsiana_Heliconiaceae:1.0,CS41_Heliconia_indica_Heliconiaceae:1.0)[&boot=97.7]:1.0)[&boot=88.9]:1.0)[&boot=100.0]:1.0,((CS57_Orchidantha_maxillarioides_Lowiaceae:1.0,CS30_Orchidantha_fimbriata_Lowiaceae:1.0)[&boot=100.0]:1.0,(CS35_Ravenala_madagascariensis_Strelitziaceae:1.0,(CS43_strelitzia_caudata_Strelitziaceae:1.0,CS71_Strelitzia_reginae_Strelitziaceae:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=99.1]:1.0)[&boot=100.0]:1.0,((HAMA_Hanguana_malayana_Hanguanaceae:1.0,(HWUP_Sabal_bermudana_Arecaceae:1.0,PPQR_Typha_angustifolia_Typhaceae:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0,((CS13_Musella_lasiocarpa_Musaceae1:1.0,(CS14_Ensete_ventricosum_Musaceae1ventricosum:1.0,CS51_Ensete_superbum_Musaceae1glaucum:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0,(CS54_Musa_coccinea_Musaceae2bcallimusa:1.0,((CS12_Musa_textilis_Musaceae2aaustralimusa:1.0,MUBA_Musa_balbisiana_Musaceae:1.0)[&boot=100.0]:1.0,(CS70_musa_basjoo_Musaceae2amusa:1.0,(CS55_Musa_ornata_Musaceaerhodochlamys:1.0,MUAC_Musa_acuminata_Musaceae:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=0.8999999999999999]:1.0)[&boot=100.0]:1.0)[&boot=91.60000000000001]:1.0,(((CS15_Cheilocostus_Costaceae3:1.0,CS27_Tapeinochilos_ananassae_Costaceae3:1.0)[&boot=100.0]:1.0,(CS72_Chamaecostus_subsessilis_Costaceae:1.0,(CS17_Dimerocostus_strobilaceus_Costaceae1:1.0,CS19_Monocostus_uniflorus_Costaceae:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=18.2]:1.0,(CS49_Costus_gabonensis_Costaceae2:1.0,(CS42_Costus_dubius_Costaceae2:1.0,(CS44_Costus_pictus_Costaceae2:1.0,(CS45_Costus_pulveralentus_Costaceae2:1.0,CS52_Costus_osae_Costaceae2:1.0)[&boot=67.2]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=100.0]:1.0)[&boot=63.3]:1.0)[&boot=99.2]:1.0):1.0);
+end;
+
+begin figtree;
+	set appearance.backgroundColorAttribute="User Selection";
+	set appearance.backgroundColour=#-1;
+	set appearance.branchColorAttribute="User Selection";
+	set appearance.branchLineWidth=1.0;
+	set appearance.foregroundColour=#-16777216;
+	set appearance.selectionColour=#-2144520576;
+	set branchLabels.colorAttribute="User Selection";
+	set branchLabels.displayAttribute="Branch times";
+	set branchLabels.fontName="sansserif";
+	set branchLabels.fontSize=8;
+	set branchLabels.fontStyle=0;
+	set branchLabels.isShown=false;
+	set branchLabels.significantDigits=4;
+	set layout.expansion=0;
+	set layout.layoutType="RECTILINEAR";
+	set layout.zoom=0;
+	set nodeBars.barWidth=4.0;
+	set nodeLabels.colorAttribute="User Selection";
+	set nodeLabels.displayAttribute="boot";
+	set nodeLabels.fontName="sansserif";
+	set nodeLabels.fontSize=8;
+	set nodeLabels.fontStyle=0;
+	set nodeLabels.isShown=true;
+	set nodeLabels.significantDigits=4;
+	set polarLayout.alignTipLabels=false;
+	set polarLayout.angularRange=0;
+	set polarLayout.rootAngle=0;
+	set polarLayout.rootLength=100;
+	set polarLayout.showRoot=true;
+	set radialLayout.spread=0.0;
+	set rectilinearLayout.alignTipLabels=false;
+	set rectilinearLayout.curvature=0;
+	set rectilinearLayout.rootLength=100;
+	set scale.offsetAge=0.0;
+	set scale.rootAge=1.0;
+	set scale.scaleFactor=1.0;
+	set scale.scaleRoot=false;
+	set scaleAxis.automaticScale=true;
+	set scaleAxis.fontSize=8.0;
+	set scaleAxis.isShown=false;
+	set scaleAxis.lineWidth=1.0;
+	set scaleAxis.majorTicks=1.0;
+	set scaleAxis.origin=0.0;
+	set scaleAxis.reverseAxis=false;
+	set scaleAxis.showGrid=true;
+	set scaleAxis.significantDigits=4;
+	set scaleBar.automaticScale=true;
+	set scaleBar.fontSize=10.0;
+	set scaleBar.isShown=true;
+	set scaleBar.lineWidth=1.0;
+	set scaleBar.scaleRange=0.0;
+	set scaleBar.significantDigits=4;
+	set tipLabels.colorAttribute="User Selection";
+	set tipLabels.displayAttribute="Names";
+	set tipLabels.fontName="sansserif";
+	set tipLabels.fontSize=8;
+	set tipLabels.fontStyle=0;
+	set tipLabels.isShown=true;
+	set tipLabels.significantDigits=4;
+	set trees.order=true;
+	set trees.orderType="decreasing";
+	set trees.rooting=true;
+	set trees.rootingType="User Selection";
+	set trees.transform=false;
+	set trees.transformType="cladogram";
+end;
+
