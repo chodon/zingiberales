@@ -2,7 +2,7 @@ use warnings;
 use strict;
 use Getopt::Std;
 
-###written by sonal dot singhal at gmail dot com in 2012, adapted slightly by chodon at gmail dot com
+###written by sonal dot singhal1 at gmail dot com in 2012, adapted slightly by chodon at gmail dot com
 ###note -- now needs to be adapted for updated blast i.e. makeblastdb instead of formatdb etc
 
 my %opts = (b=>undef, a=>undef, o=>undef);
