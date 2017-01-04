@@ -19,18 +19,18 @@ getopts('Z:', \%opts);
 
 #home directory with all my files; make sure to end with a backslash
 
-my $fastqdirRaw = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/clean/';
-my $fastqdir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/nucAlignFix/';
-my $home = '/global/scratch/cdspecht/';
+#?# my $fastqdirRaw = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/clean/';
+#?# my $fastqdir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/nucAlignFix/';
+#?# my $home = '/global/scratch/cdspecht/';
 
 
 #program paths
-my $VarScan = '/global/scratch/cdspecht/chodon/zingiberales/sep_exons_full_cds/VarScan.v2.3.6.jar';
-my $novoalign = '/global/home/users/cdspecht/chodon/programs/novocraft/novoalign';
-my $novoindex = '/global/home/users/cdspecht/chodon/programs/novocraft/novoindex';
-my $gatk = '/global/home/users/cdspecht/bin/GenomeAnalysisTK.jar';
+#?# my $VarScan = '/global/scratch/cdspecht/chodon/zingiberales/sep_exons_full_cds/VarScan.v2.3.6.jar';
+#?# my $novoalign = '/global/home/users/cdspecht/chodon/programs/novocraft/novoalign';
+#?# my $novoindex = '/global/home/users/cdspecht/chodon/programs/novocraft/novoindex';
+#?# my $gatk = '/global/home/users/cdspecht/bin/GenomeAnalysisTK.jar';
 
-my $originalRef = $home . 'zingiberales' . '/' . $opts{Z};  
+#?# my $originalRef = $home . 'zingiberales' . '/' . $opts{Z};  
 
 #arguments for novoalign
 my $insertSize = 230;
@@ -39,7 +39,7 @@ my $maxScore = 240;
 
 #library name
 
-my @lib = qw(CS71 CS35 CS43);      #cost
+#?# my @lib = qw(CS71 CS35 CS43);      #cost
 my $fam = $opts{Z};
 #my @lib = ('','');      #musa
 #my @lib = ('','');      #heli
@@ -137,8 +137,8 @@ sub makeInitialAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+        #?# system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        #?# system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -154,7 +154,7 @@ sub makeInitialAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
+#?#         system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
         system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
         system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
@@ -529,8 +529,8 @@ sub makeSecondaryAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+#?#         system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+#?#         system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -546,7 +546,7 @@ sub makeSecondaryAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
+#?#         system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
         system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
         system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
@@ -912,8 +912,8 @@ sub makeThirdAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+#?#         system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+#?#         system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -929,7 +929,7 @@ sub makeThirdAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
+ #?#        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
         system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
         system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
@@ -1294,8 +1294,8 @@ sub makeFourthAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+ #?#        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+ #?#        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -1311,7 +1311,7 @@ sub makeFourthAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
+ #?#        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
         system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
         system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
@@ -1677,8 +1677,8 @@ sub makeFinalAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+  #?#       system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+  #?#       system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -1694,7 +1694,7 @@ sub makeFinalAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
+ #?#        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
         system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
         system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
