@@ -7,7 +7,7 @@
 
 use warnings;
 use strict;
-use lib "/global/home/users/cdspecht/chodon/programs/local_perl/BioPerl-1.6.1";
+#?# use lib "/global/home/users/cdspecht/chodon/programs/local_perl/BioPerl-1.6.1";
 use Bio::SeqIO;
 use List::Util qw(min max);
 use Getopt::Std;
