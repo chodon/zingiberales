@@ -7,7 +7,7 @@
 
 use warnings;
 use strict;
-use lib "/global/home/users/cdspecht/chodon/programs/local_perl/BioPerl-1.6.1";
+#?# use lib "/global/home/users/cdspecht/chodon/programs/local_perl/BioPerl-1.6.1";
 use Bio::SeqIO;
 use List::Util qw(min max);
 use Getopt::Std;
@@ -19,29 +19,25 @@ getopts('L:Z:', \%opts);
 
 #home directory with all my files; make sure to end with a backslash
 
-my $fastqdir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/clean/';
-my $mapsembleOutDir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/nucMapAF/';
-my $home = '/global/scratch/cdspecht/';
+#?# my $fastqdir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/clean/';
+#?# my $mapsembleOutDir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/nucMapAF/';
+#?# my $home = '/global/scratch/cdspecht/';
 
 
 #program paths
-my $VarScan = '/global/scratch/cdspecht/chodon/zingiberales/sep_exons_full_cds/VarScan.v2.3.6.jar';
-my $novoalign = '/global/home/users/cdspecht/chodon/programs/novocraft/novoalign';
-my $novoindex = '/global/home/users/cdspecht/chodon/programs/novocraft/novoindex';
-my $gatk = '/global/home/users/cdspecht/bin/GenomeAnalysisTK.jar';
-my $phasehap = '/global/home/users/cdspecht/chodon/programs/phaseHap.pl';
-my $mapsembler = '/global/home/users/cdspecht/bin/mapsembler2/tools/mapsembler';
-my $trash1 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/trashmeplease*';
-my $trash2 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/index_k*';
-my $finalassemblymaker = '/global/home/users/cdspecht/chodon/programs/5-finalAssemblyCS.pl';
-my $recipblast = '/global/home/users/cdspecht/bin/7recipBlasting.pl';
+#?# my $VarScan = '/global/scratch/cdspecht/chodon/zingiberales/sep_exons_full_cds/VarScan.v2.3.6.jar';
+#?# my $novoalign = '/global/home/users/cdspecht/chodon/programs/novocraft/novoalign';
+#?# my $novoindex = '/global/home/users/cdspecht/chodon/programs/novocraft/novoindex';
+#?# my $gatk = '/global/home/users/cdspecht/bin/GenomeAnalysisTK.jar';
+#?# my $mapsembler = '/global/home/users/cdspecht/bin/mapsembler2/tools/mapsembler';
+#?# my $trash1 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/trashmeplease*';
+#?# my $trash2 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/index_k*';
+#?# my $recipblast = '/global/home/users/cdspecht/bin/7recipBlasting.pl';
+## note that -b, -f and -r are set per library in this pipeline
+my $picard = '/clusterfs/vector/home/groups/software/sl-6.x86_64/modules/picard/2.4.1/picard.jar';
     
-    ##set universal options for phasehap
-    my $optG = '/global/home/users/cdspecht/bin';
-    my $optp = '/global/home/users/cdspecht/bin';
-    ## note that -b, -f and -r are set per library in this pipeline
 
-my $originalRef = $home . 'zingiberales/Project_Specht/precleaned/nucAlignFix/' . $opts{L} .  '/' . 'map2/' . $opts{L} . '.clean4.fa';  
+#?# my $originalRef = $home . 'zingiberales/Project_Specht/precleaned/nucAlignFix/' . $opts{L} .  '/' . 'map2/' . $opts{L} . '.clean4.fa';  
 
 #arguments for novoalign
 my $insertSize = 230;
@@ -67,7 +63,7 @@ my @lib = ($opts{L});      #cost
 system("date");
 	
 foreach my $lib (@lib) {
-#    mapsembler($lib);
+    mapsembler($lib);
     makeInitialAlignment($lib);
     makepileups($lib);
     mapsembler2($lib);
@@ -207,8 +203,8 @@ sub makeInitialAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard MarkDuplicates INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard AddOrReplaceReadGroups INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
         system("samtools sort $target_rg_bam $bam");
 	system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -223,9 +219,9 @@ sub makeInitialAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
-        system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
-        system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard CreateSequenceDictionary REFERENCE=$ref OUTPUT=$dict");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
        
        #remove temp files, get ready for phasing 
        system("mv $bam.realigned.bam $tempBam");
@@ -266,8 +262,8 @@ sub makepileups {
     system("samtools mpileup -AB -f $ref $bam > $pileup");
 
     #run varscan 
-    system("java -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
-    
+    system("java -Djava.io.tmpdir=$tempDir -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
+     
     ####### parse VarScan to new fasta (note - this was adapted from another file so rather than renaming variables, i just 
             # used the definitions already in the script. therefore, some files are referenced by 2 different handles
     
@@ -648,8 +644,8 @@ sub makeSecondaryAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 	#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard MarkDuplicates INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard AddOrReplaceReadGroups INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	system("samtools sort $target_rg_bam $bam");
 	system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -665,9 +661,9 @@ sub makeSecondaryAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
-        system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
-        system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard CreateSequenceDictionary REFERENCE=$ref OUTPUT=$dict");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
 
 #remove temp files, get ready for phasing
@@ -714,8 +710,8 @@ sub makepileups2 {
 
     #run varscan 
    
-    system("java -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
-    
+    system("java -Djava.io.tmpdir=$tempDir -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
+   
     ####### parse VarScan to new fasta (note - this was adapted from another file so rather than renaming variables, i just 
             # used the definitions already in the script. therefore, some files are referenced by 2 different handles
     
@@ -1030,8 +1026,8 @@ sub makeThirdAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard MarkDuplicates INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard AddOrReplaceReadGroups INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	    system("samtools sort $target_rg_bam $bam");
 	    system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -1047,9 +1043,9 @@ sub makeThirdAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
-        system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
-        system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard CreateSequenceDictionary REFERENCE=$ref OUTPUT=$dict");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
 
 #remove temp files, get ready for phasing
@@ -1096,7 +1092,7 @@ sub makepileups3 {
 
     #run varscan 
    
-    system("java -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
+    system("java -Djava.io.tmpdir=$tempDir -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
     
     ####### parse VarScan to new fasta (note - this was adapted from another file so rather than renaming variables, i just 
             # used the definitions already in the script. therefore, some files are referenced by 2 different handles
@@ -1411,8 +1407,8 @@ sub makeFourthAlignment {
 	system("samtools index $target_sorted_bam"); 
   
        	#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard MarkDuplicates INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard AddOrReplaceReadGroups INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
 	system("samtools sort $target_rg_bam $bam");
 	system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
@@ -1428,9 +1424,9 @@ sub makeFourthAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
-        system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
-        system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard CreateSequenceDictionary REFERENCE=$ref OUTPUT=$dict");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
 
 
 #remove temp files, get ready for phasing
@@ -1477,7 +1473,7 @@ sub makepileups4 {
 
     #run varscan 
    
-    system("java -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
+    system("java -Djava.io.tmpdir=$tempDir -jar $VarScan pileup2cns $pileup --min-coverage 1 --min-var-freq 0.4 --min-reads2 1 --p-value 0.17 > $varfile");
     
     ####### parse VarScan to new fasta (note - this was adapted from another file so rather than renaming variables, i just 
             # used the definitions already in the script. therefore, some files are referenced by 2 different handles
@@ -1794,10 +1790,10 @@ sub makeFinalAlignment {
 		system("samtools index $target_sorted_bam"); 
   
 		#make readgroups and remove duplicates
-        system("java -jar /global/home/users/cdspecht/bin/MarkDuplicates.jar INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
-        system("java -jar /global/home/users/cdspecht/bin/AddOrReplaceReadGroups.jar INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
-	    system("samtools sort $target_rg_bam $bam");
-	    system("samtools index $bam.bam");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard MarkDuplicates INPUT=$target_sorted_bam OUTPUT=$target_duped_bam METRICS_FILE=$bam.metric REMOVE_DUPLICATES=true ASSUME_SORTED=true");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard AddOrReplaceReadGroups INPUT=$target_duped_bam OUTPUT=$target_rg_bam RGID=$lib RGLB=beads RGPL=illumina RGPU=lane2 RGSM=$lib");
+	system("samtools sort $target_rg_bam $bam");
+	system("samtools index $bam.bam");
         system("samtools idxstats $bam.bam > $bam.stats");
 
         #generate a genome file, generate coverage with bedtools
@@ -1811,10 +1807,10 @@ sub makeFinalAlignment {
         system("samtools faidx $ref");
         my $dict = substr ($ref, 0, -2) . "dict";
         my $intervals = substr ($ref, 0, -2) . "intervals";
-        system("java -jar /global/home/users/cdspecht/bin/CreateSequenceDictionary.jar REFERENCE=$ref OUTPUT=$dict");
-        system("java -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
-        system("java -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
-
+        system("java -Djava.io.tmpdir=$tempDir -Xmx32g -jar $picard CreateSequenceDictionary REFERENCE=$ref OUTPUT=$dict");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T RealignerTargetCreator -R $ref -I $bam.bam -o $intervals");
+        system("java -Djava.io.tmpdir=$tempDir -Xmx8g -jar $gatk -T IndelRealigner -R $ref -I $bam.bam -targetIntervals $intervals -o $bam.realigned.bam -LOD 0.1 -model USE_SW");
+ 
 
 #remove temp files, get ready for phasing
         
