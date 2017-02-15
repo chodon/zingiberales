@@ -4,6 +4,7 @@ use Getopt::Std;
 
 ###written by sonal dot singhal1 at gmail dot com in 2012, adapted slightly by chodon at gmail dot com
 ###note -- now needs to be adapted for updated blast i.e. makeblastdb instead of formatdb etc
+###update for newer blast versions 02.15.2017 by chodon at gmail dot com
 
 my %opts = (b=>undef, a=>undef, o=>undef);
 getopts('b:a:o:', \%opts);
@@ -23,14 +24,14 @@ my $evalue = 1e-40;
 #################################
 
 mkdir($dir) unless(-d $dir);
-my $call1 = system("formatdb -i $bait -p F");
-my $call2 = system("formatdb -i $assembly -p F");
+my $call1 = system("makeblastdb -in $bait -input_type fasta -dbtype nucl");
+my $call2 = system("makeblastdb -in $assembly -input_type fasta -dbtype nucl");
 
 my $out = $dir . "finalBaitAssembly.fa";
 my $blast1 = $dir . "blastAssemblyBait.out";
 my $blast2 = $dir . "blastBaitAssembly.out";
-my $call3 = system("blastall -p blastn -d $bait -i $assembly -a $np -e $evalue -m 8 -o $blast1 -b 10") unless (-f $blast1);
-my $call4 = system("blastall -p blastn -d $assembly -i $bait -a $np -e $evalue -m 8 -o $blast2 -b 10") unless (-f $blast2);
+my $call3 = system("blastn -task blastn -db $bait -query $assembly -num_threads $np -evalue $evalue -outfmt 8 -out $blast1 -num_alignments 10") unless (-f $blast1);
+my $call4 = system("blastn -task blastn -db $assembly -query $bait -num_threads $np -evalue $evalue -outfmt 8 -out $blast2 -num_alignments 10") unless (-f $blast2);
 
 my $r1 = parseBlast($blast1);
 my $r2 = parseBlast($blast2);
@@ -40,7 +41,7 @@ my %seq1 = %{$seq1}; my %seq2 = %{$seq2};
 my %r1 = %{$r1}; my %r2 = %{$r2};
 
 open(OUT, ">$out");
-foreach my $c (keys %seq2) {
+  foreach my $c (keys %seq2) {
     if ($r2{$c}) {
 	my $numMatches = scalar(keys %{$r2{$c}});
 	#if it has one high match
