@@ -1,43 +1,42 @@
 ########################################################################################################
 # a script to use make pileups and run varscan to correct reference sequence          #
 # written by Chodon Sass chodon at gmail.com May 2014   
-
+#updated Feb 2017
 ########################################################################################################
 
 
 use warnings;
 use strict;
-#?# use lib "/global/home/users/cdspecht/chodon/programs/local_perl/BioPerl-1.6.1";
 use Bio::SeqIO;
 use List::Util qw(min max);
 use Getopt::Std;
 
 #this defines the library (L) and family specific reference fasta (Z) so it can be specified at the qsub command
-
+## Z is obsolete, so can be anything. should run each library in its own folder so that trash can be removed
 my %opts = (L=>undef, Z=>undef);
 getopts('L:Z:', \%opts);
 
 #home directory with all my files; make sure to end with a backslash
 
-#?# my $fastqdir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/clean/';
-#?# my $mapsembleOutDir = '/global/scratch/cdspecht/zingiberales/Project_Specht/precleaned/nucMapAF/';
-#?# my $home = '/global/scratch/cdspecht/';
+#?# my $fastqdir = '/global/scratch/chodon/zingiberales/cap2/clean/';
+#?# my $mapsembleOutDir = '/global/scratch/chodon/zingiberales/cap2/mapsemble/';
+#?# my $home = '/global/scratch/chodon/';
 
 
 #program paths
-#?# my $VarScan = '/global/scratch/cdspecht/chodon/zingiberales/sep_exons_full_cds/VarScan.v2.3.6.jar';
-#?# my $novoalign = '/global/home/users/cdspecht/chodon/programs/novocraft/novoalign';
-#?# my $novoindex = '/global/home/users/cdspecht/chodon/programs/novocraft/novoindex';
-#?# my $gatk = '/global/home/users/cdspecht/bin/GenomeAnalysisTK.jar';
-#?# my $mapsembler = '/global/home/users/cdspecht/bin/mapsembler2/tools/mapsembler';
-#?# my $trash1 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/trashmeplease*';
-#?# my $trash2 = '/global/scratch/cdspecht/chodon/programs/zing_nuc_map_align/' . $opts{L} . 'temp/index_k*';
-#?# my $recipblast = '/global/home/users/cdspecht/bin/7recipBlasting.pl';
+#?# my $VarScan = '/global/home/users/chodon/bin/VarScan.v2.3.7.jar';
+#?# my $novoalign =  '/global/home/users/chodon/bin/novocraft/novoalign';
+#?# my $novoindex = '/global/home/users/chodon/bin/novocraft/novoindex';
+#?# my $gatk = '/global/home/users/chodon/bin/gatkNew/GenomeAnalysisTK.jar';
+#?# my $mapsembler = '/global/home/users/chodon/bin/mapsembler2/tools/mapsembler';
+#?# my $trash1 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . 'temp/trashmeplease*';
+#?# my $trash2 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . 'temp/index_k*';
+#?# my $recipblast = '/global/home/users/chodon/programs/zingiberales-editForCap2/4CapturedReadProcess/7recipBlasting.pl';
 ## note that -b, -f and -r are set per library in this pipeline
 my $picard = '/clusterfs/vector/home/groups/software/sl-6.x86_64/modules/picard/2.4.1/picard.jar';
     
 
-#?# my $originalRef = $home . 'zingiberales/Project_Specht/precleaned/nucAlignFix/' . $opts{L} .  '/' . 'map2/' . $opts{L} . '.clean4.fa';  
+#?# my $originalRef = $home . 'zingiberales/cap2/nucAlignFix/' . $opts{L} .  '/' . 'map2/' . $opts{L} . '.clean4.fa';  
 
 #arguments for novoalign
 my $insertSize = 230;
