@@ -29,8 +29,8 @@ getopts('L:Z:', \%opts);
 #?# my $novoindex = '/global/home/users/chodon/bin/novocraft/novoindex';
 #?# my $gatk = '/global/home/users/chodon/bin/gatkNew/GenomeAnalysisTK.jar';
 #?# my $mapsembler = '/global/home/users/chodon/bin/mapsembler2/tools/mapsembler';
-#?# my $trash1 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . 'temp/trashmeplease*';
-#?# my $trash2 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . 'temp/index_k*';
+#?# my $trash1 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . '/trashmeplease*';
+#?# my $trash2 = '/global/scratch/chodon/zingiberales/cap2/mapsemble/programs/' . $opts{L} . '/index_k*';
 #?# my $recipblast = '/global/home/users/chodon/programs/zingiberales-editForCap2/4CapturedReadProcess/7recipBlasting.pl';
 ## note that -b, -f and -r are set per library in this pipeline
 my $picard = '/clusterfs/vector/home/groups/software/sl-6.x86_64/modules/picard/2.4.1/picard.jar';
