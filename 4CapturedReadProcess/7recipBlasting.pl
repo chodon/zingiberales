@@ -30,8 +30,8 @@ my $call2 = system("makeblastdb -in $assembly -input_type fasta -dbtype nucl");
 my $out = $dir . "finalBaitAssembly.fa";
 my $blast1 = $dir . "blastAssemblyBait.out";
 my $blast2 = $dir . "blastBaitAssembly.out";
-my $call3 = system("blastn -task blastn -db $bait -query $assembly -num_threads $np -evalue $evalue -outfmt 8 -out $blast1 -num_alignments 10") unless (-f $blast1);
-my $call4 = system("blastn -task blastn -db $assembly -query $bait -num_threads $np -evalue $evalue -outfmt 8 -out $blast2 -num_alignments 10") unless (-f $blast2);
+my $call3 = system("blastn -task blastn -db $bait -query $assembly -num_threads $np -evalue $evalue -outfmt 6 -out $blast1 -num_alignments 10") unless (-f $blast1);
+my $call4 = system("blastn -task blastn -db $assembly -query $bait -num_threads $np -evalue $evalue -outfmt 6 -out $blast2 -num_alignments 10") unless (-f $blast2);
 
 my $r1 = parseBlast($blast1);
 my $r2 = parseBlast($blast2);
